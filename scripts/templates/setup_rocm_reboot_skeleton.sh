@@ -611,6 +611,12 @@ PY
       die "vLLM API-server extras (uvloop/fastapi/aiohttp) failed."
     "${PYTHON_BIN}" -c 'import vllm, uvloop; print(f"vLLM {vllm.__version__}")' ||
       die "Official vLLM ROCm wheel verification failed."
+    # vLLM 0.23 ROCm platform detection imports amdsmi. Without it the
+    # engine stays on UnspecifiedPlatform and api_server dies at argparse.
+    "${PYTHON_BIN}" -m pip install amdsmi ||
+      die "vLLM ROCm platform requires the amdsmi Python package."
+    "${PYTHON_BIN}" -c 'import amdsmi' ||
+      die "amdsmi installation verification failed."
     # Importing torch first empties amdsmi handles on this stack. A .pth
     # import runs before vLLM argparse so baseline/extended can infer ROCm.
     # Do not install sitecustomize.py: Ubuntu's /usr/lib/python3.14 copy wins.
@@ -905,6 +911,10 @@ fi
 # Torch 2.11/2.12 on this host report device_count=0 after HIP init.
 # Cache amdsmi handles so SGLang can see the MI300X (vLLM has its own copy).
 if [[ "${BENCHMARK_INSTALL_SGLANG}" == 1 ]]; then
+  "${PYTHON_BIN}" -m pip install amdsmi ||
+    die "SGLang ROCm GPU discovery requires the amdsmi Python package."
+  "${PYTHON_BIN}" -c 'import amdsmi' ||
+    die "amdsmi installation verification failed."
   site_pkg="${VENV_ROOT}/lib/python${PYTHON_TARGET_VERSION}/site-packages"
   src_custom="${REPO_ROOT}/scripts/templates/vllm_rocm_sitecustomize.py"
   if [[ ! -f "${src_custom}" ]]; then
