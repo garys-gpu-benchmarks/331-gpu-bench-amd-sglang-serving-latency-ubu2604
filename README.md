@@ -90,16 +90,16 @@ Same SGLang/tiny_sglang server split as 130 on port 30000. Then runs scripts/ben
 ## 2. What It Validates
 
 - Validates concurrent serving latency percentiles and request throughput. This is not sequential prompt-response. Smoke uses scripts/tiny_sglang_server.py; baseline and extended use sglang.launch_server
-- #1: E2E latency, ms (end_to_end_request_latency_p50_msec); is present and physically sensible.
-- #2: TTFT, ms (ttft_p50_msec); is present and physically sensible.
+- #1: E2E latency p50, includes queue wait, ms (end_to_end_request_latency_p50_msec); is present and physically sensible.
+- #2: TTFT p50, includes queue wait, ms (ttft_p50_msec); is present and physically sensible.
 - #3: TPOT, ms (time_per_output_token_tpot_p50_msec); is present and physically sensible.
 - #4: ITL, ms (inter_token_latency_itl_p50_msec); is present and physically sensible.
 - #5: Request throughput (request_throughput_requests_sec) is present and physically sensible.
 
 ## 3. Metrics Captured
 
-- **#1: E2E latency, ms** — stored as `end_to_end_request_latency_p50_msec`.
-- **#2: TTFT, ms** — stored as `ttft_p50_msec`.
+- **#1: E2E latency p50, includes queue wait, ms** — stored as `end_to_end_request_latency_p50_msec`.
+- **#2: TTFT p50, includes queue wait, ms** — stored as `ttft_p50_msec`.
 - **#3: TPOT, ms** — stored as `time_per_output_token_tpot_p50_msec`.
 - **#4: ITL, ms** — stored as `inter_token_latency_itl_p50_msec`.
 - **#5: Request throughput** — stored as `request_throughput_requests_sec`.
@@ -194,7 +194,7 @@ Expected ranges and gates live in `config/benchmark_config.yaml` under `baseline
 Create cannot finish without `scripts/collect_workload.py`.
 
 **`self_check` overlay rewritten**
-Do not overwrite files listed in `results/overlay_lock.json`.
+`Locked overlay rewritten` means the sibling file and the `sha256` in `results/overlay_lock.json` disagree. The repair is to make `implementation_components/<component-id>/files/<path>`, the sibling path, and that digest the same bytes, then recheck with `create_one_workload.py --validate-only`. Do not replace the overlay with a new collector, and do not regenerate a non-empty sibling.
 
 **Remote SSH drop during setup**
 Reconnect and resume `bash setup.sh --assume-yes`. Do not wipe `.venv` or `.cache`.

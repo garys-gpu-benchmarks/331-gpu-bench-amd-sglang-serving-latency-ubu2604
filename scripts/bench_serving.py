@@ -245,10 +245,11 @@ def main() -> int:
             "e2e_ms": rec["e2e_ms"],
             "ttft_ms": rec["ttft_ms"],
             "tpot_ms": rec["tpot_ms"],
+            "server_identity": rec.get("server_identity", ""),
             **{k: summary_metrics[k] for k in METRIC_KEYS},
         })
     rows.append({"check_name": "summary", "status": "stub" if serve_status == "stub" else "ok", "server_identity": summary_metrics.get("server_identity", ""), **params, "e2e_ms": summary_metrics["end_to_end_request_latency_p50_msec"], "ttft_ms": summary_metrics["ttft_p50_msec"], "tpot_ms": summary_metrics["time_per_output_token_tpot_p50_msec"], **{k: summary_metrics[k] for k in METRIC_KEYS}})
-    fieldnames = list(dict.fromkeys(key for row in rows for key in row))
+    fieldnames = list(rows[0].keys())
     with (run_dir / "raw_results.csv").open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
