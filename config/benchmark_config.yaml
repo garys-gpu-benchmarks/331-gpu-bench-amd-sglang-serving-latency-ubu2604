@@ -15,8 +15,8 @@ sweep:
     extended: 128
   output_len:
     smoke: 16
-    baseline: 840
-    extended: 1700
+    baseline: 1400
+    extended: 3900
   max_total_tokens:
     smoke: 2048
     baseline: 16384
@@ -29,5 +29,5 @@ sweep:
   num_prompts:
     smoke: 2
     baseline: 24
-    extended: 48
+    extended: 56
   seed: 42

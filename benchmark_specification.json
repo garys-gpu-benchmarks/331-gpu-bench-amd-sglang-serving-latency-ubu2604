@@ -107,12 +107,12 @@
   {
     "field_name": "run_benchmark Command Plus Options for Baseline Run",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "bash run_benchmark.sh --baseline --validate --dtype bfloat16 --input-len 128 --output-len 840 --max-total-tokens 16384 --max-concurrency 8 --request-rate inf --num-prompts 24 --seed 42"
+    "value": "bash run_benchmark.sh --baseline --validate --dtype bfloat16 --input-len 128 --output-len 1400 --max-total-tokens 16384 --max-concurrency 8 --request-rate inf --num-prompts 24 --seed 42"
   },
   {
     "field_name": "run_benchmark Command Plus Options for Extended Run",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "bash run_benchmark.sh --extended --validate --dtype bfloat16 --input-len 128 --output-len 1700 --max-total-tokens 32768 --max-concurrency 8 --request-rate inf --num-prompts 48 --seed 42"
+    "value": "bash run_benchmark.sh --extended --validate --dtype bfloat16 --input-len 128 --output-len 3900 --max-total-tokens 32768 --max-concurrency 8 --request-rate inf --num-prompts 56 --seed 42"
   },
   {
     "field_name": "Output Fields / Metrics to Parse",
@@ -407,7 +407,7 @@
   {
     "field_name": "Profile Parameter Values",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Parameters_SmokeBaselineExtend",
-    "value": "{\"dtype\": {\"smoke\": \"bfloat16\", \"baseline\": \"bfloat16\", \"extended\": \"bfloat16\", \"notes\": \"\"}, \"input_len\": {\"smoke\": \"64\", \"baseline\": \"128\", \"extended\": \"128\", \"notes\": \"\"}, \"output_len\": {\"smoke\": \"16\", \"baseline\": \"840\", \"extended\": \"1700\", \"notes\": \"AMD Ubuntu 26.04 sibling of 131. Same 2026-09-09 MI300X real-SGLang output_len (3370/5480). 26.04 / ROCm 7.14 not remeasured. num_prompts stays 24/48. | 2026-09-27 GARY_LEDGER (AggregatedRuntimeLedgers_20260927): baseline output_len 3370 measured 15:11 and extended 5480 measured 33:09. Scaled to 890 (~4:00) and 1900 (~11:30). num_prompts stays 24/48. 26.04 was slower than the 24.04 note this row used to copy.\"}, \"max_total_tokens\": {\"smoke\": \"2048\", \"baseline\": \"16384\", \"extended\": \"32768\", \"notes\": \"\"}, \"max_concurrency\": {\"smoke\": \"2\", \"baseline\": \"8\", \"extended\": \"8\", \"notes\": \"\"}, \"request_rate\": {\"smoke\": \"inf\", \"baseline\": \"inf\", \"extended\": \"inf\", \"notes\": \"\"}, \"num_prompts\": {\"smoke\": \"2\", \"baseline\": \"24\", \"extended\": \"48\", \"notes\": \"2026-08-18 retune: baseline>=3min / extended>=10min or extended~15min; NVIDIA copied from AMD. 2026-08-18: 125 steps from measured 11.4ms/step; 131 prompts=24 for 3 waves.\"}, \"seed\": {\"smoke\": \"42\", \"baseline\": \"42\", \"extended\": \"42\", \"notes\": \"\"}}"
+    "value": "{\"dtype\": {\"smoke\": \"bfloat16\", \"baseline\": \"bfloat16\", \"extended\": \"bfloat16\", \"notes\": \"\"}, \"input_len\": {\"smoke\": \"64\", \"baseline\": \"128\", \"extended\": \"128\", \"notes\": \"\"}, \"output_len\": {\"smoke\": \"16\", \"baseline\": \"1400\", \"extended\": \"3900\", \"notes\": \"AMD Ubuntu 26.04 sibling of 131. Same 2026-09-09 MI300X real-SGLang output_len (3370/5480). 26.04 / ROCm 7.14 not remeasured. num_prompts stays 24/48. | 2026-09-27 GARY_LEDGER (AggregatedRuntimeLedgers_20260927): baseline output_len 3370 measured 15:11 and extended 5480 measured 33:09. Scaled to 890 (~4:00) and 1900 (~11:30). num_prompts stays 24/48. 26.04 was slower than the 24.04 note this row used to copy.\"}, \"max_total_tokens\": {\"smoke\": \"2048\", \"baseline\": \"16384\", \"extended\": \"32768\", \"notes\": \"\"}, \"max_concurrency\": {\"smoke\": \"2\", \"baseline\": \"8\", \"extended\": \"8\", \"notes\": \"\"}, \"request_rate\": {\"smoke\": \"inf\", \"baseline\": \"inf\", \"extended\": \"inf\", \"notes\": \"\"}, \"num_prompts\": {\"smoke\": \"2\", \"baseline\": \"24\", \"extended\": \"56\", \"notes\": \"2026-08-18 retune: baseline>=3min / extended>=10min or extended~15min; NVIDIA copied from AMD. 2026-08-18: 125 steps from measured 11.4ms/step; 131 prompts=24 for 3 waves.\"}, \"seed\": {\"smoke\": \"42\", \"baseline\": \"42\", \"extended\": \"42\", \"notes\": \"\"}}"
   },
   {
     "field_name": "Profile Command Authorship",
