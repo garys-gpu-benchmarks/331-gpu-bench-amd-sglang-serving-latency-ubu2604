@@ -21,13 +21,16 @@ sweep:
     smoke: 2048
     baseline: 16384
     extended: 32768
+  model_name: mistralai/Mistral-7B-v0.3
   max_concurrency:
     smoke: 2
     baseline: 8
     extended: 8
-  request_rate: inf
+  max_running_requests:
+    smoke: 2
+    baseline: 8
+    extended: 8
   num_prompts:
     smoke: 2
     baseline: 24
     extended: 56
-  seed: 42

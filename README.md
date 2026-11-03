@@ -85,7 +85,7 @@ Three operator scripts from [`garys-gpu-benchmarks/gpu-bench-suite`](https://git
 
 ## 1. Overview
 
-Same SGLang/tiny_sglang server split as 130 on port 30000. Then runs scripts/bench_serving.py concurrently. num_prompts, max_concurrency, input_len, and output_len come from yaml. Do not use prompt_response_client.py. Sweep dimensions: dtype, input_len, output_len, max_total_tokens, max_concurrency, request_rate, num_prompts, seed.
+Same SGLang/tiny_sglang server split as 130 on port 30000. Then runs scripts/bench_serving.py concurrently. num_prompts, max_concurrency, input_len, and output_len come from yaml. Do not use prompt_response_client.py. Sweep dimensions: dtype, input_len, output_len, max_total_tokens, model_name, max_concurrency, max_running_requests, num_prompts.
 
 ## 2. What It Validates
 
