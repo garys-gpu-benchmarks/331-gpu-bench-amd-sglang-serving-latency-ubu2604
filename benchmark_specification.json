@@ -25,6 +25,11 @@
     "value": "gpu-bench-amd-sglang-serving-latency-ubu2604"
   },
   {
+    "field_name": "Repo Directory Name",
+    "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
+    "value": "331-gpu-bench-amd-sglang-serving-latency-ubu2604"
+  },
+  {
     "field_name": "Main Goal",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
     "value": "Measure SGLang concurrent serving latency percentiles under load"
