@@ -140,6 +140,16 @@
     "value": "-"
   },
   {
+    "field_name": "Validation Objective",
+    "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
+    "value": "Validates concurrent SGLang latency percentiles and throughput. Smoke uses the tiny server"
+  },
+  {
+    "field_name": "Command Tools Executed",
+    "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
+    "value": "Smoke starts tiny_sglang_server.py; later profiles start sglang.launch_server, then bench_serving.py"
+  },
+  {
     "field_name": "run_benchmark Command Plus Options for Smoke Run (One minute or less)",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
     "value": "bash run_benchmark.sh --smoke --validate --dtype bfloat16 --input-len 64 --output-len 16 --max-total-tokens 2048 --model-name mistralai/Mistral-7B-v0.3 --max-concurrency 2 --max-running-requests 2 --num-prompts 2"
@@ -153,16 +163,6 @@
     "field_name": "run_benchmark Command Plus Options for Extended Run (8 to 15 minutes)",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
     "value": "bash run_benchmark.sh --extended --validate --dtype bfloat16 --input-len 128 --output-len 3900 --max-total-tokens 32768 --model-name mistralai/Mistral-7B-v0.3 --max-concurrency 8 --max-running-requests 8 --num-prompts 56"
-  },
-  {
-    "field_name": "Validation Objective",
-    "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Validates concurrent serving latency percentiles and request throughput. This is not sequential prompt-response. Smoke uses scripts/tiny_sglang_server.py; baseline and extended use sglang.launch_server"
-  },
-  {
-    "field_name": "Command Tools Executed",
-    "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Smoke starts scripts/tiny_sglang_server.py; baseline and extended start python -m sglang.launch_server, then scripts/bench_serving.py"
   },
   {
     "field_name": "Command Execution Details and Purpose",
@@ -377,7 +377,7 @@
   {
     "field_name": "Workload Command Line Executable",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Smoke starts scripts/tiny_sglang_server.py; baseline and extended start python -m sglang.launch_server, then scripts/bench_serving.py"
+    "value": "Smoke starts tiny_sglang_server.py; later profiles start sglang.launch_server, then bench_serving.py"
   },
   {
     "field_name": "ROCm Version",
@@ -412,7 +412,7 @@
   {
     "field_name": "Profile Parameter Values",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Parameters_SmokeBaselineExtend",
-    "value": "{\"dtype\": {\"smoke\": \"bfloat16\", \"baseline\": \"bfloat16\", \"extended\": \"bfloat16\", \"notes\": \"\"}, \"input_len\": {\"smoke\": \"64\", \"baseline\": \"128\", \"extended\": \"128\", \"notes\": \"\"}, \"output_len\": {\"smoke\": \"16\", \"baseline\": \"1400\", \"extended\": \"3900\", \"notes\": \"AMD Ubuntu 26.04 sibling of 131. Same 2026-09-09 MI300X real-SGLang output_len (3370/5480). 26.04 / ROCm 7.14 not remeasured. num_prompts stays 24/48. | 2026-09-27 GARY_LEDGER (AggregatedRuntimeLedgers_20260927): baseline output_len 3370 measured 15:11 and extended 5480 measured 33:09. Scaled to 890 (~4:00) and 1900 (~11:30). num_prompts stays 24/48. 26.04 was slower than the 24.04 note this row used to copy.\"}, \"max_total_tokens\": {\"smoke\": \"2048\", \"baseline\": \"16384\", \"extended\": \"32768\", \"notes\": \"\"}, \"model_name\": {\"smoke\": \"mistralai/Mistral-7B-v0.3\", \"baseline\": \"mistralai/Mistral-7B-v0.3\", \"extended\": \"mistralai/Mistral-7B-v0.3\", \"notes\": \"\"}, \"max_concurrency\": {\"smoke\": \"2\", \"baseline\": \"8\", \"extended\": \"8\", \"notes\": \"\"}, \"max_running_requests\": {\"smoke\": \"2\", \"baseline\": \"8\", \"extended\": \"8\", \"notes\": \"\"}, \"num_prompts\": {\"smoke\": \"2\", \"baseline\": \"24\", \"extended\": \"56\", \"notes\": \"2026-08-18 retune: baseline>=3min / extended>=10min or extended~15min; NVIDIA copied from AMD. 2026-08-18: 125 steps from measured 11.4ms/step; 131 prompts=24 for 3 waves.\"}}"
+    "value": "{\"dtype\": {\"smoke\": \"bfloat16\", \"baseline\": \"bfloat16\", \"extended\": \"bfloat16\"}, \"input_len\": {\"smoke\": \"64\", \"baseline\": \"128\", \"extended\": \"128\"}, \"output_len\": {\"smoke\": \"16\", \"baseline\": \"1400\", \"extended\": \"3900\"}, \"max_total_tokens\": {\"smoke\": \"2048\", \"baseline\": \"16384\", \"extended\": \"32768\"}, \"model_name\": {\"smoke\": \"mistralai/Mistral-7B-v0.3\", \"baseline\": \"mistralai/Mistral-7B-v0.3\", \"extended\": \"mistralai/Mistral-7B-v0.3\"}, \"max_concurrency\": {\"smoke\": \"2\", \"baseline\": \"8\", \"extended\": \"8\"}, \"max_running_requests\": {\"smoke\": \"2\", \"baseline\": \"8\", \"extended\": \"8\"}, \"num_prompts\": {\"smoke\": \"2\", \"baseline\": \"24\", \"extended\": \"56\"}}"
   },
   {
     "field_name": "Profile Command Authorship",

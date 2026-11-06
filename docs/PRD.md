@@ -21,7 +21,7 @@ Launch scripts/tiny_sglang_server.py on smoke, or python -m sglang.launch_server
 Measure SGLang concurrent serving latency percentiles under load
 
 ## Validation Objective
-Validates concurrent serving latency percentiles and request throughput. This is not sequential prompt-response. Smoke uses scripts/tiny_sglang_server.py; baseline and extended use sglang.launch_server
+Validates concurrent SGLang latency percentiles and throughput. Smoke uses the tiny server
 
 ## Workload Category
 LLM Inference & Serving

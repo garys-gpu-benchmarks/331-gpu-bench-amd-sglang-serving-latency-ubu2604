@@ -16,8 +16,12 @@ usage() {
   cat <<'USAGE'
 Usage: bash run_benchmark.sh [OPTIONS]
 
-Run smoke/baseline/extended profile
-Run 1) Git provided Python SGLang inference LLM server (sglang.launch_server.py), and 2) User-created Python serving prompt benchmark (sglang.bench_serving.py / scripts/bench_serving.py).
+Workload Name:          SGLang Serving Latency Benchmark.
+Main Goal:              Measure SGLang concurrent serving latency percentiles under load.
+Validation Objective:   Validates concurrent SGLang latency percentiles and throughput. Smoke uses
+                        the tiny server.
+Command Tools Executed: Smoke starts tiny_sglang_server.py; later profiles start
+                        sglang.launch_server, then bench_serving.py.
 
 Profiles (default: --smoke):
   --smoke                       Run smoke profile
@@ -37,7 +41,7 @@ Parameters (override the profile's value):
 General options:
   --config <file>               Config file (default: config/benchmark_config.yaml)
   --quiet                       Suppress nonessential stdout
-  --log-level <level>           ERROR|WARN|INFO|DEBUG (default: INFO)
+  --log-level <level>           ERROR|WARN|INFO|DEBUG (default: INFO; DEBUG also prints [RUN] commands)
   --specification               Print this workload's specification and exit
   --help                        Show this help and exit
 
@@ -77,6 +81,7 @@ for _help_arg in "$@"; do
     --specification) python3 scripts/print_benchmark_definition.py; exit 0 ;;
   esac
 done
+run_profiles_in_order "${REPO_ROOT}/run_benchmark.sh" "$@"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -150,8 +155,7 @@ BENCHMARK_RUN_COMMAND="bash run_benchmark.sh --${PROFILE}"
 BENCHMARK_RUN_COMMAND+=" --model-name $(printf %q "${MODEL_NAME}") --dtype ${DTYPE} --input-len ${INPUT_LEN} --output-len ${OUTPUT_LEN} --num-prompts ${NUM_PROMPTS} --max-concurrency ${MAX_CONCURRENCY} --max-total-tokens ${MAX_TOTAL_TOKENS} --max-running-requests ${MAX_RUNNING_REQUESTS} --schedule-policy ${SCHEDULE_POLICY} --request-rate ${REQUEST_RATE} --seed ${SEED} --backend ${BACKEND} --dataset-name ${DATASET_NAME}"
 set_benchmark_run_command "${BENCHMARK_RUN_COMMAND}"
 HOSTNAME_VALUE="$(hostname -s 2>/dev/null || hostname)"
-STAMP="$(date -u +"%Y%m%d_%H%M%S")"
-RUN_DIR="${REPO_ROOT}/results/raw/${STAMP}_${REPO_NAME}_${HOSTNAME_VALUE}"
+RUN_DIR="${REPO_ROOT}/results/raw/$(benchmark_raw_run_dir_name "${REPO_NAME}" "${HOSTNAME_VALUE}")"
 mkdir -p "${RUN_DIR}"
 RAW_FILE="${RUN_DIR}/raw_output.txt"
 set_benchmark_run_dir "${RUN_DIR}"
@@ -204,16 +208,16 @@ run_collection() {
     fi
     server_cmd="${PYTHON_BIN} -m sglang.launch_server --model-path ${sglang_model_path} --dtype ${DTYPE} --port 30000 --host 127.0.0.1 --tp 1 --mem-fraction-static 0.8 --schedule-policy ${SCHEDULE_POLICY} --max-total-tokens ${MAX_TOTAL_TOKENS} --max-running-requests ${MAX_RUNNING_REQUESTS} --disable-cuda-graph --watchdog-timeout 1800"
   fi
-  echo "[RUN] ${server_cmd}"
+  log_run "${server_cmd}"
   echo "${server_cmd}" >> "${COMMAND_LOG}"
   bash -c "${server_cmd}" >> "${RUN_DIR}/server.log" 2>&1 &
   SERVER_PID="$!"
   wait_for_server "http://127.0.0.1:30000/v1/models"
   local collect_cmd
   printf -v collect_cmd '%q ' "${PYTHON_BIN}" scripts/bench_serving.py --run-dir "${RUN_DIR}" --base-url "http://127.0.0.1:30000" --model-name "${MODEL_NAME}" --dtype "${DTYPE}" --tensor-parallel-size "${TENSOR_PARALLEL_SIZE}" --schedule-policy "${SCHEDULE_POLICY}" --prompt-source "${PROMPT_SOURCE}" --input-len "${INPUT_LEN}" --output-len "${OUTPUT_LEN}" --max-total-tokens "${MAX_TOTAL_TOKENS}" --max-running-requests "${MAX_RUNNING_REQUESTS}" --max-concurrency "${MAX_CONCURRENCY}" --request-rate "${REQUEST_RATE}" --num-prompts "${NUM_PROMPTS}" --backend "${BACKEND}" --dataset-name "${DATASET_NAME}" --seed "${SEED}"
-  echo "[RUN] ${collect_cmd}"
+  log_run "${collect_cmd}"
   echo "${collect_cmd}" >> "${COMMAND_LOG}"
-  if ! "${PYTHON_BIN}" scripts/bench_serving.py --run-dir "${RUN_DIR}" --base-url "http://127.0.0.1:30000" --model-name "${MODEL_NAME}" --dtype "${DTYPE}" --tensor-parallel-size "${TENSOR_PARALLEL_SIZE}" --schedule-policy "${SCHEDULE_POLICY}" --prompt-source "${PROMPT_SOURCE}" --input-len "${INPUT_LEN}" --output-len "${OUTPUT_LEN}" --max-total-tokens "${MAX_TOTAL_TOKENS}" --max-running-requests "${MAX_RUNNING_REQUESTS}" --max-concurrency "${MAX_CONCURRENCY}" --request-rate "${REQUEST_RATE}" --num-prompts "${NUM_PROMPTS}" --backend "${BACKEND}" --dataset-name "${DATASET_NAME}" --seed "${SEED}" 2>&1 | tee -a "${RUN_DIR}/run.log"; then
+  if ! "${PYTHON_BIN}" scripts/bench_serving.py --run-dir "${RUN_DIR}" --base-url "http://127.0.0.1:30000" --model-name "${MODEL_NAME}" --dtype "${DTYPE}" --tensor-parallel-size "${TENSOR_PARALLEL_SIZE}" --schedule-policy "${SCHEDULE_POLICY}" --prompt-source "${PROMPT_SOURCE}" --input-len "${INPUT_LEN}" --output-len "${OUTPUT_LEN}" --max-total-tokens "${MAX_TOTAL_TOKENS}" --max-running-requests "${MAX_RUNNING_REQUESTS}" --max-concurrency "${MAX_CONCURRENCY}" --request-rate "${REQUEST_RATE}" --num-prompts "${NUM_PROMPTS}" --backend "${BACKEND}" --dataset-name "${DATASET_NAME}" --seed "${SEED}" 2>&1 | tee -a "${RUN_DIR}/run.log" | hide_run_lines; then
     die "collection failed with status 1"
   fi
   cleanup_server
@@ -222,7 +226,7 @@ run_parse() {
   log_section "Parse"
   local parse_cmd
   printf -v parse_cmd '%q ' "${PYTHON_BIN}" scripts/parse_results.py --raw-file "${RAW_FILE}" --db "${REPO_ROOT}/results/benchmark.db" --summary "${REPO_ROOT}/results/summary.json" --definition "${REPO_ROOT}/benchmark_specification.json" --run-dir "${RUN_DIR}"
-  echo "[RUN] ${parse_cmd}"
+  log_run "${parse_cmd}"
   echo "${parse_cmd}" >> "${COMMAND_LOG}"
   "${PYTHON_BIN}" scripts/parse_results.py --raw-file "${RAW_FILE}" --db "${REPO_ROOT}/results/benchmark.db" --summary "${REPO_ROOT}/results/summary.json" --definition "${REPO_ROOT}/benchmark_specification.json" --run-dir "${RUN_DIR}" || die "parse failed"
 }
@@ -230,7 +234,7 @@ run_validate() {
   log_section "Validation"
   local validate_cmd
   printf -v validate_cmd '%q ' "${PYTHON_BIN}" scripts/validate_results.py --db "${REPO_ROOT}/results/benchmark.db" --config "${CONFIG_FILE}"
-  echo "[RUN] ${validate_cmd}"
+  log_run "${validate_cmd}"
   echo "${validate_cmd}" >> "${COMMAND_LOG}"
   "${PYTHON_BIN}" scripts/validate_results.py --db "${REPO_ROOT}/results/benchmark.db" --config "${CONFIG_FILE}" || die "validation failed"
 }
