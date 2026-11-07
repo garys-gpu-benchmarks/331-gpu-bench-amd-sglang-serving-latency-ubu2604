@@ -16,7 +16,7 @@ sweep:
     baseline: 1400
     extended: 3900
   max_total_tokens:
-    smoke: 2048
+    smoke: 16384
     baseline: 16384
     extended: 32768
   model_name: mistralai/Mistral-7B-v0.3

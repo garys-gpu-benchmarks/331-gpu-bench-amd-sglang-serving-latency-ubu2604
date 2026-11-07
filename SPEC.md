@@ -2,7 +2,7 @@
 
 ## Execution Description
 
-Same SGLang/tiny_sglang server split as 130 on port 30000. Then runs scripts/bench_serving.py concurrently. num_prompts, max_concurrency, input_len, and output_len come from yaml. Do not use prompt_response_client.py. Sweep dimensions: dtype, input_len, output_len, max_total_tokens, model_name, max_concurrency, max_running_requests, num_prompts.
+Starts python -m sglang.launch_server with Mistral-7B-v0.3 on every profile, on port 30000. Then runs scripts/bench_serving.py concurrently. num_prompts, max_concurrency, input_len, and output_len come from yaml. Do not use prompt_response_client.py. Sweep dimensions: dtype, input_len, output_len, max_total_tokens, model_name, max_concurrency, max_running_requests, num_prompts.
 
 ## Parameters
 
@@ -11,7 +11,7 @@ Same SGLang/tiny_sglang server split as 130 on port 30000. Then runs scripts/ben
 | dtype | `--dtype` | smoke=bfloat16, baseline=bfloat16, extended=bfloat16 | bfloat16 | From Parameter list; see Execution Description With Parameters. |
 | input_len | `--input-len` | smoke=64, baseline=128, extended=128 | 128 | From Parameter list; see Execution Description With Parameters. |
 | output_len | `--output-len` | smoke=16, baseline=1400, extended=3900 | 1400 | From Parameter list; see Execution Description With Parameters. |
-| max_total_tokens | `--max-total-tokens` | smoke=2048, baseline=16384, extended=32768 | 16384 | From Parameter list; see Execution Description With Parameters. |
+| max_total_tokens | `--max-total-tokens` | smoke=16384, baseline=16384, extended=32768 | 16384 | From Parameter list; see Execution Description With Parameters. |
 | model_name | `--model-name` | smoke=mistralai/Mistral-7B-v0.3, baseline=mistralai/Mistral-7B-v0.3, extended=mistralai/Mistral-7B-v0.3 | mistralai/Mistral-7B-v0.3 | From Parameter list; see Execution Description With Parameters. |
 | max_concurrency | `--max-concurrency` | smoke=2, baseline=8, extended=8 | 8 | From Parameter list; see Execution Description With Parameters. |
 | max_running_requests | `--max-running-requests` | smoke=2, baseline=8, extended=8 | 8 | From Parameter list; see Execution Description With Parameters. |
@@ -20,7 +20,7 @@ Same SGLang/tiny_sglang server split as 130 on port 30000. Then runs scripts/ben
 ## Invocation
 
 ```bash
-Smoke starts tiny_sglang_server.py; later profiles start sglang.launch_server, then bench_serving.py
+Every profile starts sglang.launch_server with Mistral-7B-v0.3, then bench_serving.py
 ```
 
 ## Raw Output Format
@@ -41,16 +41,16 @@ summary,ok,380,35,11,380,35,11,10,4.5
 
 ## Framework
 
-Same SGLang/tiny_sglang server split as 130 on port 30000. Then runs scripts/bench_serving.py concurrently. num_prompts, max_concurrency, input_len, and output_len come from yaml.
+Starts python -m sglang.launch_server with Mistral-7B-v0.3 on every profile, on port 30000. Then runs scripts/bench_serving.py concurrently. num_prompts, max_concurrency, input_len, and output_len come from yaml.
 
 ## Installation and Execution Summary
 
-Launch scripts/tiny_sglang_server.py on smoke, or python -m sglang.launch_server with Mistral-7B-v0.3 on baseline and extended, on port 30000. Then run scripts/bench_serving.py with yaml num_prompts and max_concurrency, to measure concurrent serving latency and throughput. This is not prompt_response_client.py
+On every profile, launch python -m sglang.launch_server with Mistral-7B-v0.3 on port 30000. Then run scripts/bench_serving.py with yaml num_prompts and max_concurrency, to measure concurrent serving latency and throughput. This is not prompt_response_client.py
 
 ## Platform Portability
 
 - **AMD (primary):** ```bash
-Smoke starts tiny_sglang_server.py; later profiles start sglang.launch_server, then bench_serving.py
+Every profile starts sglang.launch_server with Mistral-7B-v0.3, then bench_serving.py
 ```
 - **NVIDIA:** Primary target is AMD ROCm. NVIDIA notes in this section are reference only and are not the execution path.
 
@@ -102,10 +102,10 @@ bash run_benchmark.sh --extended
 2. `run.error_message` is NULL.
 3. `started_at` and `finished_at` are valid ISO-8601 UTC strings.
 4. All required aggregate metrics in `runs` are non-NULL and finite.
-5. All required aggregate metrics are physically sensible (positive values). Same SGLang/tiny_sglang server split as 130 on port 30000. Then runs scripts/bench_serving.py concurrently. num_prompts, max_concurrency, input_len, and output_len come from yaml.
+5. All required aggregate metrics are physically sensible (positive values). Starts python -m sglang.launch_server with Mistral-7B-v0.3 on every profile, on port 30000. Then runs scripts/bench_serving.py concurrently. num_prompts, max_concurrency, input_len, and output_len come from yaml.
 6. At least 2 sample rows exist for the latest `run_id` (sweep coverage).
 7. No sample has `status = 'error'`.
-8. Same SGLang/tiny_sglang server split as 130 on port 30000. Then runs scripts/bench_serving.py concurrently. num_prompts, max_concurrency, input_len, and output_len come from yaml.
+8. Starts python -m sglang.launch_server with Mistral-7B-v0.3 on every profile, on port 30000. Then runs scripts/bench_serving.py concurrently. num_prompts, max_concurrency, input_len, and output_len come from yaml.
 
 ### Baseline / Threshold configuration (`config/benchmark_config.yaml`)
 

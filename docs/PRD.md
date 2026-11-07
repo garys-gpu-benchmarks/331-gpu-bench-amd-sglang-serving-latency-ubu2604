@@ -15,13 +15,13 @@ This PRD.md section is populated from benchmark_specification.json, which is the
 SGLang Serving Latency Benchmark
 
 ## Execution Summary (Run and Measure)
-Launch scripts/tiny_sglang_server.py on smoke, or python -m sglang.launch_server with Mistral-7B-v0.3 on baseline and extended, on port 30000. Then run scripts/bench_serving.py with yaml num_prompts and max_concurrency, to measure concurrent serving latency and throughput. This is not prompt_response_client.py
+On every profile, launch python -m sglang.launch_server with Mistral-7B-v0.3 on port 30000. Then run scripts/bench_serving.py with yaml num_prompts and max_concurrency, to measure concurrent serving latency and throughput. This is not prompt_response_client.py
 
 ## Main Goal
 Measure SGLang concurrent serving latency percentiles under load
 
 ## Validation Objective
-Validates concurrent SGLang latency percentiles and throughput. Smoke uses the tiny server
+Validates concurrent SGLang latency percentiles and throughput
 
 ## Workload Category
 LLM Inference & Serving

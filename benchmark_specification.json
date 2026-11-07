@@ -37,7 +37,7 @@
   {
     "field_name": "Command Tools Executed",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Smoke starts tiny_sglang_server.py; later profiles start sglang.launch_server, then bench_serving.py"
+    "value": "Every profile starts sglang.launch_server with Mistral-7B-v0.3, then bench_serving.py"
   },
   {
     "field_name": "Metrics",
@@ -147,7 +147,7 @@
   {
     "field_name": "run_benchmark Command Plus Options for Smoke Run (One minute or less)",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "bash run_benchmark.sh --smoke --validate --dtype bfloat16 --input-len 64 --output-len 16 --max-total-tokens 2048 --model-name mistralai/Mistral-7B-v0.3 --max-concurrency 2 --max-running-requests 2 --num-prompts 2"
+    "value": "bash run_benchmark.sh --smoke --validate --dtype bfloat16 --input-len 64 --output-len 16 --max-total-tokens 16384 --model-name mistralai/Mistral-7B-v0.3 --max-concurrency 2 --max-running-requests 2 --num-prompts 2"
   },
   {
     "field_name": "run_benchmark Command Plus Options for Baseline Run (3 to 5 minutes)",
@@ -162,22 +162,22 @@
   {
     "field_name": "Validation Objective",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Validates concurrent SGLang latency percentiles and throughput. Smoke uses the tiny server"
+    "value": "Validates concurrent SGLang latency percentiles and throughput"
   },
   {
     "field_name": "Command Execution Details and Purpose",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Launch scripts/tiny_sglang_server.py on smoke, or python -m sglang.launch_server with Mistral-7B-v0.3 on baseline and extended, on port 30000. Then run scripts/bench_serving.py with yaml num_prompts and max_concurrency, to measure concurrent serving latency and throughput. This is not prompt_response_client.py"
+    "value": "On every profile, launch python -m sglang.launch_server with Mistral-7B-v0.3 on port 30000. Then run scripts/bench_serving.py with yaml num_prompts and max_concurrency, to measure concurrent serving latency and throughput. This is not prompt_response_client.py"
   },
   {
     "field_name": "Command Methodology",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "On smoke, start scripts/tiny_sglang_server.py. On baseline and extended, start python -m sglang.launch_server with Mistral-7B-v0.3 on port 30000. Then run scripts/bench_serving.py with yaml num_prompts and max_concurrency, and record end-to-end latency, TTFT, TPOT, ITL, and throughput. This is not prompt_response_client.py"
+    "value": "On every profile, start python -m sglang.launch_server with Mistral-7B-v0.3 on port 30000. Then run scripts/bench_serving.py with yaml num_prompts and max_concurrency, and record end-to-end latency, TTFT, TPOT, ITL, and throughput. This is not prompt_response_client.py"
   },
   {
     "field_name": "Execution Description With Parameters",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Same SGLang/tiny_sglang server split as 130 on port 30000. Then runs scripts/bench_serving.py concurrently. num_prompts, max_concurrency, input_len, and output_len come from yaml. Do not use prompt_response_client.py. output_format: csv. model_name: model id the server prefetches and the client requests. max_running_requests: SGLang --max-running-requests limit"
+    "value": "Starts python -m sglang.launch_server with Mistral-7B-v0.3 on every profile, on port 30000. Then runs scripts/bench_serving.py concurrently. num_prompts, max_concurrency, input_len, and output_len come from yaml. Do not use prompt_response_client.py. output_format: csv. model_name: model id the server prefetches and the client requests. max_running_requests: SGLang --max-running-requests limit"
   },
   {
     "field_name": "Execution Domain",
@@ -327,7 +327,7 @@
   {
     "field_name": "Known Runtime Constraints (<=35 Words Each)",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Concurrent or rate-controlled load required. Smoke uses tiny_sglang_server.py. Baseline/extended need SGLang plus Mistral. Port is 30000. Do not run 130 and 131 at the same time; both use port 30000"
+    "value": "Concurrent or rate-controlled load required. Every profile needs SGLang plus Mistral. Port is 30000. Do not run 130 and 131 at the same time; both use port 30000"
   },
   {
     "field_name": "GPU Architecutre ID",
@@ -372,12 +372,12 @@
   {
     "field_name": "Installation and Execution Summary",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Launch scripts/tiny_sglang_server.py on smoke, or python -m sglang.launch_server with Mistral-7B-v0.3 on baseline and extended, on port 30000. Then run scripts/bench_serving.py with yaml num_prompts and max_concurrency, to measure concurrent serving latency and throughput. This is not prompt_response_client.py"
+    "value": "On every profile, launch python -m sglang.launch_server with Mistral-7B-v0.3 on port 30000. Then run scripts/bench_serving.py with yaml num_prompts and max_concurrency, to measure concurrent serving latency and throughput. This is not prompt_response_client.py"
   },
   {
     "field_name": "Workload Command Line Executable",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Smoke starts tiny_sglang_server.py; later profiles start sglang.launch_server, then bench_serving.py"
+    "value": "Every profile starts sglang.launch_server with Mistral-7B-v0.3, then bench_serving.py"
   },
   {
     "field_name": "ROCm Version",
@@ -392,7 +392,7 @@
   {
     "field_name": "Execution Summary (Run and Measure)",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Launch scripts/tiny_sglang_server.py on smoke, or python -m sglang.launch_server with Mistral-7B-v0.3 on baseline and extended, on port 30000. Then run scripts/bench_serving.py with yaml num_prompts and max_concurrency, to measure concurrent serving latency and throughput. This is not prompt_response_client.py"
+    "value": "On every profile, launch python -m sglang.launch_server with Mistral-7B-v0.3 on port 30000. Then run scripts/bench_serving.py with yaml num_prompts and max_concurrency, to measure concurrent serving latency and throughput. This is not prompt_response_client.py"
   },
   {
     "field_name": "nVidia Porting Instructions (Reference Only)",
@@ -412,7 +412,7 @@
   {
     "field_name": "Profile Parameter Values",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Parameters_SmokeBaselineExtend",
-    "value": "{\"dtype\": {\"smoke\": \"bfloat16\", \"baseline\": \"bfloat16\", \"extended\": \"bfloat16\"}, \"input_len\": {\"smoke\": \"64\", \"baseline\": \"128\", \"extended\": \"128\"}, \"output_len\": {\"smoke\": \"16\", \"baseline\": \"1400\", \"extended\": \"3900\"}, \"max_total_tokens\": {\"smoke\": \"2048\", \"baseline\": \"16384\", \"extended\": \"32768\"}, \"model_name\": {\"smoke\": \"mistralai/Mistral-7B-v0.3\", \"baseline\": \"mistralai/Mistral-7B-v0.3\", \"extended\": \"mistralai/Mistral-7B-v0.3\"}, \"max_concurrency\": {\"smoke\": \"2\", \"baseline\": \"8\", \"extended\": \"8\"}, \"max_running_requests\": {\"smoke\": \"2\", \"baseline\": \"8\", \"extended\": \"8\"}, \"num_prompts\": {\"smoke\": \"2\", \"baseline\": \"24\", \"extended\": \"56\"}}"
+    "value": "{\"dtype\": {\"smoke\": \"bfloat16\", \"baseline\": \"bfloat16\", \"extended\": \"bfloat16\"}, \"input_len\": {\"smoke\": \"64\", \"baseline\": \"128\", \"extended\": \"128\"}, \"output_len\": {\"smoke\": \"16\", \"baseline\": \"1400\", \"extended\": \"3900\"}, \"max_total_tokens\": {\"smoke\": \"16384\", \"baseline\": \"16384\", \"extended\": \"32768\"}, \"model_name\": {\"smoke\": \"mistralai/Mistral-7B-v0.3\", \"baseline\": \"mistralai/Mistral-7B-v0.3\", \"extended\": \"mistralai/Mistral-7B-v0.3\"}, \"max_concurrency\": {\"smoke\": \"2\", \"baseline\": \"8\", \"extended\": \"8\"}, \"max_running_requests\": {\"smoke\": \"2\", \"baseline\": \"8\", \"extended\": \"8\"}, \"num_prompts\": {\"smoke\": \"2\", \"baseline\": \"24\", \"extended\": \"56\"}}"
   },
   {
     "field_name": "Profile Command Authorship",
