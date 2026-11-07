@@ -14,12 +14,11 @@ capture_benchmark_run_command_submitted "$@"
 
 usage() {
   cat <<'USAGE'
+
 Usage: bash run_benchmark.sh [OPTIONS]
 
 Workload Name:          SGLang Serving Latency Benchmark.
 Main Goal:              Measure SGLang concurrent serving latency percentiles under load.
-Validation Objective:   Validates concurrent SGLang latency percentiles and throughput. Smoke uses
-                        the tiny server.
 Command Tools Executed: Smoke starts tiny_sglang_server.py; later profiles start
                         sglang.launch_server, then bench_serving.py.
 
