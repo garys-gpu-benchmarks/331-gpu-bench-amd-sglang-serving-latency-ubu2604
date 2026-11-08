@@ -147,7 +147,7 @@
   {
     "field_name": "run_benchmark Command Plus Options for Smoke Run (One minute or less)",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "bash run_benchmark.sh --smoke --validate --dtype bfloat16 --input-len 64 --output-len 16 --max-total-tokens 16384 --model-name mistralai/Mistral-7B-v0.3 --max-concurrency 2 --max-running-requests 2 --num-prompts 2"
+    "value": "bash run_benchmark.sh --smoke --validate --dtype bfloat16 --input-len 64 --output-len 16 --max-total-tokens 1024 --model-name mistralai/Mistral-7B-v0.3 --max-concurrency 2 --max-running-requests 2 --num-prompts 2"
   },
   {
     "field_name": "run_benchmark Command Plus Options for Baseline Run (3 to 5 minutes)",
@@ -205,14 +205,14 @@
     "value": "MI300X"
   },
   {
-    "field_name": "Raw Output Format",
-    "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "raw_results.csv with one req_N row per request and a final summary row. Each request row also carries the run-level p50 metrics"
-  },
-  {
     "field_name": "Primary Record Granularity",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
     "value": "one row per completed request, then one summary row"
+  },
+  {
+    "field_name": "Raw Output Format",
+    "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
+    "value": "raw_results.csv with one req_N row per request and a final summary row. Each request row also carries the run-level p50 metrics"
   },
   {
     "field_name": "Raw Output Example",
@@ -225,14 +225,14 @@
     "value": "end_to_end_request_latency_p50_msec, ttft_p50_msec, time_per_output_token_tpot_p50_msec, inter_token_latency_itl_p50_msec, request_throughput_requests_sec"
   },
   {
-    "field_name": "Success Criteria",
-    "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "The client exits 0 and at least one request completes"
-  },
-  {
     "field_name": "Parser and Normalization Notes",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
     "value": "Parse the serving CSV, not server logs. When the response streams, ttft_ms is the time to the first token and tpot_ms is (e2e - ttft) / (output tokens - 1). A non-streaming response leaves ttft_ms blank. p50, p95, and p99 are percentiles of the completed requests. The summary row copies the p50 into e2e_ms, ttft_ms, and tpot_ms"
+  },
+  {
+    "field_name": "Success Criteria",
+    "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
+    "value": "The client exits 0 and at least one request completes"
   },
   {
     "field_name": "Hardware Config",
@@ -412,7 +412,7 @@
   {
     "field_name": "Profile Parameter Values",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Parameters_SmokeBaselineExtend",
-    "value": "{\"dtype\": {\"smoke\": \"bfloat16\", \"baseline\": \"bfloat16\", \"extended\": \"bfloat16\"}, \"input_len\": {\"smoke\": \"64\", \"baseline\": \"128\", \"extended\": \"128\"}, \"output_len\": {\"smoke\": \"16\", \"baseline\": \"1400\", \"extended\": \"3900\"}, \"max_total_tokens\": {\"smoke\": \"16384\", \"baseline\": \"16384\", \"extended\": \"32768\"}, \"model_name\": {\"smoke\": \"mistralai/Mistral-7B-v0.3\", \"baseline\": \"mistralai/Mistral-7B-v0.3\", \"extended\": \"mistralai/Mistral-7B-v0.3\"}, \"max_concurrency\": {\"smoke\": \"2\", \"baseline\": \"8\", \"extended\": \"8\"}, \"max_running_requests\": {\"smoke\": \"2\", \"baseline\": \"8\", \"extended\": \"8\"}, \"num_prompts\": {\"smoke\": \"2\", \"baseline\": \"24\", \"extended\": \"56\"}}"
+    "value": "{\"dtype\": {\"smoke\": \"bfloat16\", \"baseline\": \"bfloat16\", \"extended\": \"bfloat16\"}, \"input_len\": {\"smoke\": \"64\", \"baseline\": \"128\", \"extended\": \"128\"}, \"output_len\": {\"smoke\": \"16\", \"baseline\": \"1400\", \"extended\": \"3900\"}, \"max_total_tokens\": {\"smoke\": \"1024\", \"baseline\": \"16384\", \"extended\": \"32768\"}, \"model_name\": {\"smoke\": \"mistralai/Mistral-7B-v0.3\", \"baseline\": \"mistralai/Mistral-7B-v0.3\", \"extended\": \"mistralai/Mistral-7B-v0.3\"}, \"max_concurrency\": {\"smoke\": \"2\", \"baseline\": \"8\", \"extended\": \"8\"}, \"max_running_requests\": {\"smoke\": \"2\", \"baseline\": \"8\", \"extended\": \"8\"}, \"num_prompts\": {\"smoke\": \"2\", \"baseline\": \"24\", \"extended\": \"56\"}}"
   },
   {
     "field_name": "Profile Command Authorship",

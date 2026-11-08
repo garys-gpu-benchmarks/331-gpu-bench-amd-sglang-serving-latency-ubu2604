@@ -17,10 +17,10 @@ usage() {
 
 Usage: bash run_benchmark.sh [OPTIONS]
 
-Workload Name:          SGLang Serving Latency Benchmark.
-Main Goal:              Measure SGLang concurrent serving latency percentiles under load.
+Workload Name:          SGLang Serving Latency Benchmark
+Main Goal:              Measure SGLang concurrent serving latency percentiles under load
 Command Tools Executed: Every profile starts sglang.launch_server with Mistral-7B-v0.3, then
-                        bench_serving.py.
+                        bench_serving.py
 
 Profiles (default: --smoke):
   --smoke                       Run smoke profile
@@ -36,8 +36,9 @@ Parameters (override the profile's value):
                                   baseline: 1400
                                   extended: 3900
   --max-total-tokens <n>        Maximum server-side tokens held in the scheduling or KV-cache pool
-                                  smoke/baseline: 16384
-                                  extended:       32768
+                                  smoke:    1024
+                                  baseline: 16384
+                                  extended: 32768
   --model-name <value>          Model or weights identifier to load
                                   all profiles: mistralai/Mistral-7B-v0.3
   --max-concurrency <n>         Maximum client-side requests in flight
@@ -210,11 +211,16 @@ run_collection() {
   find "${VENV_ROOT:-${REPO_ROOT}/.venv}/lib" -name 'lock_module_*' -delete 2>/dev/null || true
   rm -f /tmp/aiter_configs/*.lock 2>/dev/null || true
   # A consolidated.safetensors cache is not a finished shard set. Download the
-  # index shards and launch with that snapshot directory, not the repo id.
+  # index shards, config.json and the tokenizer files, load AutoConfig and
+  # AutoTokenizer from the snapshot, and launch with that snapshot directory,
+  # not the repo id.
   sglang_model_path="$("${PYTHON_BIN}" scripts/prefetch_sglang_model.py --model-id "${MODEL_NAME}" | tail -n 1)"
   if [[ -z "${sglang_model_path}" || ! -d "${sglang_model_path}" ]]; then
-    die "SGLang shard prefetch did not return a snapshot directory"
+    die "SGLang model prefetch did not return a snapshot with config.json, weights and a loadable tokenizer (see the [FAIL] line above)"
   fi
+  # Restart the published clock after the download (as the vLLM runners do):
+  # the ledger times the server start and the requests, not the network.
+  mark_benchmark_measure_start
   server_cmd="${PYTHON_BIN} -m sglang.launch_server --model-path ${sglang_model_path} --dtype ${DTYPE} --port 30000 --host 127.0.0.1 --tp 1 --mem-fraction-static 0.8 --schedule-policy ${SCHEDULE_POLICY} --max-total-tokens ${MAX_TOTAL_TOKENS} --max-running-requests ${MAX_RUNNING_REQUESTS} --disable-cuda-graph --watchdog-timeout 1800"
   log_run "${server_cmd}"
   echo "${server_cmd}" >> "${COMMAND_LOG}"
