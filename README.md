@@ -48,8 +48,8 @@ Profile values live in `config/benchmark_config.yaml`.
 
 | # | Metric | Key |
 |---|---|---|
-| 1 | E2E latency p50, includes queue wait, ms | `end_to_end_request_latency_p50_msec` |
-| 2 | TTFT p50, includes queue wait, ms | `ttft_p50_msec` |
+| 1 | E2E latency p50, client-observed from send, ms | `end_to_end_request_latency_p50_msec` |
+| 2 | TTFT p50, client-observed from send, ms | `ttft_p50_msec` |
 | 3 | TPOT, ms | `time_per_output_token_tpot_p50_msec` |
 | 4 | ITL, ms | `inter_token_latency_itl_p50_msec` |
 | 5 | Request throughput | `request_throughput_requests_sec` |
