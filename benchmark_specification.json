@@ -40,6 +40,11 @@
     "value": "Every profile starts sglang.launch_server with Mistral-7B-v0.3, then bench_serving.py"
   },
   {
+    "field_name": "Execution Description With Parameters",
+    "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
+    "value": "Starts python -m sglang.launch_server with Mistral-7B-v0.3 on every profile, on port 30000. Then runs scripts/bench_serving.py concurrently. num_prompts, max_concurrency, input_len, and output_len come from yaml. Do not use prompt_response_client.py. output_format: csv. model_name: model id the server prefetches and the client requests. max_running_requests: SGLang --max-running-requests limit"
+  },
+  {
     "field_name": "Metrics",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
     "value": "#1: E2E latency p50, client-observed from send, ms (end_to_end_request_latency_p50_msec); #2: TTFT p50, client-observed from send, ms (ttft_p50_msec); #3: TPOT, ms (time_per_output_token_tpot_p50_msec); #4: ITL, ms (inter_token_latency_itl_p50_msec); #5: Request throughput (request_throughput_requests_sec)"
@@ -173,11 +178,6 @@
     "field_name": "Command Methodology",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
     "value": "On every profile, start python -m sglang.launch_server with Mistral-7B-v0.3 on port 30000. Then run scripts/bench_serving.py with yaml num_prompts and max_concurrency, and record end-to-end latency, TTFT, TPOT, ITL, and throughput. This is not prompt_response_client.py"
-  },
-  {
-    "field_name": "Execution Description With Parameters",
-    "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Starts python -m sglang.launch_server with Mistral-7B-v0.3 on every profile, on port 30000. Then runs scripts/bench_serving.py concurrently. num_prompts, max_concurrency, input_len, and output_len come from yaml. Do not use prompt_response_client.py. output_format: csv. model_name: model id the server prefetches and the client requests. max_running_requests: SGLang --max-running-requests limit"
   },
   {
     "field_name": "Execution Domain",
